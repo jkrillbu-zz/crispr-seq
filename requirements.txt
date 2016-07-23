@@ -1,0 +1,7 @@
+cycler==0.10.0
+pyparsing==2.1.5
+pysam==0.9.1.4
+python-dateutil==2.5.3
+pytz==2016.6.1
+six==1.10.0
+virtualenv==15.0.2

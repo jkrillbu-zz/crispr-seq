@@ -1,0 +1,5 @@
+
+The following command should result in the same output as /xchip/datasci/mburger/data/tothova_DNAseq/AGV28 except keep_tmp_files was set to false.
+code_dir should be targeted_CRISPR_SE directory from git repo
+
+pipeline [code_dir] [output_dir] /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/1_AGV28.1.barcode_1.fastq /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/1_AGV28.1.1.fastq /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_barcodes.csv /seq/references/Homo_sapiens_assembly19/v1/Homo_sapiens_assembly19.fasta /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_indel_genes.csv /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_cutsites.csv /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_point_mutation_info.txt /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_known_indels.txt /xchip/datasci/mburger/data/tothova_DNAseq/AGV28/AGV28_known_indel_samples.csv

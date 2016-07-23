@@ -1,0 +1,117 @@
+#!/bin/bash
+
+if [ -f "local.dat" ]
+then
+	picard_path=~/picard/dist/picard.jar
+else
+	use .r-3.1.1-bioconductor-3.0
+	use Python-2.7
+	export PATH="$PATH:/seq/software/bwa_mem:/seq/software/picard/current/3rd_party/samtools/samtools"
+	picard_path=/seq/software/picard/current/bin/picard.jar
+fi
+
+#General params
+code_dir=$1; output_dir=$2
+#Mapping params 
+map=$3; hg19_reference=$4
+#De-multiplexing params
+multiplex=$5; fastq_barcodes=$6; fastq_reads=$7; csv_sample_barcodes=$8
+#Unknown indel analysis 
+novel_indel=$9; neg_cntrl=${10}
+#Power to detect indels in sampled WT and then aritificially modified reads
+power=${11}; indel_cut_site=${12}
+#Required for both novel_indel and power
+indel_genes=${13}; indel_cut_interval=${14}; 
+#Point mutations analysis params
+point_mut=${15}; point_mut_positions=${16}; point_mut_genes=${17}
+#Known indel analysis params
+known_indel=${18}; known_indels=${19}; known_indels_samples=${20}
+
+if [ "$#" -ne 20 ]; then
+    echo "Requires 20 parameters"
+fi
+
+keep_tmp_files=true
+
+#If fastq is already split into samples, just put the fastq files in the ${output_dir}/Reads and set map = T, multiplex = F
+if [ $map == "T" ] ; then
+	echo "Preparing to map reads"
+	if [ $multiplex == "T" ] ; then
+		echo "Splitting fastq by sample and aligning to reference"
+		###If fastq and barcode files are inside output folder, can use relative paths to output folder 
+		###Rscript SplitBarcodes.R [output_dir] [fastq_barcodes] [fastq_reads] [csv_sampleName(col1)_barcode(col2)_noheader]
+		Rscript ${code_dir}/SplitBarcodes.R $output_dir $fastq_barcodes $fastq_reads $csv_sample_barcodes
+	fi
+
+	cd ${output_dir}/Reads
+
+	###Creates an aligned,sorted,indexed bam file for each sample
+	for FNAME in $(ls *.fastq)
+	do
+		SAMPLE=${FNAME%.fastq}
+		bwa mem -M -t 6 $hg19_reference $FNAME > ${SAMPLE}.sam
+		samtools view -S -h -b ${SAMPLE}.sam > ${SAMPLE}.bam
+		rm ${SAMPLE}.sam
+		samtools sort ${SAMPLE}.bam ${SAMPLE}.sorted
+		rm ${SAMPLE}.bam
+		samtools index ${SAMPLE}.sorted.bam
+	done
+
+fi
+
+#Detection power
+if [ $power == "T" ] ; then
+	mkdir ${output_dir}/Power
+	cd ${output_dir}/Power
+	python ${code_dir}/findWildTypeReads.py -i ${output_dir}/Reads -o ${output_dir}/Power -g $indel_genes
+	Rscript ${code_dir}/createTestReads.R ${output_dir}/Power $indel_cut_site $indel_genes
+	
+	bwa mem -M -t 6 -A 3 -L 7 -E 1 /Users/mburger/Data/Homo_sapiens_assembly19.fasta ${output_dir}/Power/tests.fastq > ${output_dir}/Power/tests.sam
+	bwa mem -M -t 6 -A 1 -L 3 /Users/mburger/Data/Homo_sapiens_assembly19.fasta ${output_dir}/Power/tests.fastq > ${output_dir}/Power/tests.sam
+	bwa mem -M -t 6 -A 2 -E 1 /Users/mburger/Data/Homo_sapiens_assembly19.fasta ${output_dir}/Power/tests.fastq > ${output_dir}/Power/tests.sam
+	bwa mem -M -t 6 /Users/mburger/Data/Homo_sapiens_assembly19.fasta ${output_dir}/Power/tests.fastq > ${output_dir}/Power/tests.sam
+	samtools view -S -h -b ${output_dir}/Power/tests.sam > ${output_dir}/Power/tests.bam
+	samtools sort ${output_dir}/Power/tests.bam ${output_dir}/Power/tests.sorted
+	samtools index ${output_dir}/Power/tests.sorted.bam
+	
+	python ${code_dir}/parseCIGAR.py -i ${output_dir}/Power -o ${output_dir}/Power/VariantCalls -c $indel_cut_interval -g $indel_genes
+
+	python ${code_dir}/analyzeMultiAlign.py -i ${output_dir}/Power/VariantCalls -c $indel_cut_interval -g $indel_genes 
+
+	Rscript ${code_dir}/indelAccuracy.R ${output_dir}/Power/VariantCalls/tests ${output_dir}/Power/VariantCalls
+fi
+
+
+
+if [ $novel_indel == "T" ] ; then
+	echo "Running unknown indel analysis"
+
+	python ${code_dir}/parseCIGAR.py -i ${output_dir}/Reads -o ${output_dir}/VariantCalls -c $indel_cut_interval -g $indel_genes
+	
+	python ${code_dir}/analyzeMultiAlign.py -i ${output_dir}/VariantCalls -c $indel_cut_interval -g $indel_genes
+
+	###Compiles table of indel fractions and total read counts [samples,genes]
+	###Creates a summary of types of indels observed and number of occurances for each sample,gene pair 
+	Rscript ${code_dir}/indel_quant_analysis.R ${code_dir} $output_dir $indel_cut_interval $neg_cntrl
+	Rscript ${code_dir}/indelSizes.R ${output_dir}/VariantCalls ${output_dir}/indel_quant/plots_trial
+fi
+
+
+if [ $point_mut == "T" ] ; then
+	echo "Running point mutation analysis"
+	###Returns fraction of reads with specified base at given location as well as total coverage for that position
+	Rscript ${code_dir}/PileupAPosition.R $point_mut_positions $point_mut_genes ${output_dir}/Reads 20 100000 $output_dir
+fi
+
+
+if [ $known_indel == "T" ] ; then
+	echo "Running known indels analysis"
+	###Creates reference files for bwa alignment  
+	Rscript ${code_dir}/createReference.R $output_dir $known_indels $picard_path
+	###Aligns the specified samples to the custom reference
+	Rscript ${code_dir}/alignCustomRef.R ${output_dir}/Reads ${output_dir}/known_indel_quant/ref/custom_ref.fasta $known_indels_samples ${output_dir}/known_indel_quant/known_indel_fraction_totals.csv
+fi
+
+if [ $keep_tmp_files = false ] ; then
+	rm -R ${output_dir}/Reads
+fi
