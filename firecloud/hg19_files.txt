@@ -1,0 +1,7 @@
+/Users/mburger/Data/Homo_sapiens_assembly19.dict
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.amb
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.ann
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.bwt
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.fai
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.pac
+/Users/mburger/Data/Homo_sapiens_assembly19.fasta.sa

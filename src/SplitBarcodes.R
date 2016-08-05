@@ -15,7 +15,7 @@ fl_barcodes <- args[2]
 fl_reads <- args[3]
 barcode_file <- args[4]
 
-reads_folder <- file.path(output_folder,"Reads")
+reads_folder <- "Reads"
 dir.create(reads_folder)
 
 barcodes <- read.csv(barcode_file, header=FALSE, stringsAsFactors=FALSE)

@@ -1,0 +1,7 @@
+{
+  "crisprSeqWorkflow.barcodes_fastq": "/Users/mburger/dockeryard/test_data/AU6R0_sample_barcodes.fastq",
+  "crisprSeqWorkflow.ref_idxs": "/Users/mburger/dockeryard/crispr-seq/firecloud/hg19_files.txt",
+  "crisprSeqWorkflow.reads_fastq": "/Users/mburger/dockeryard/test_data/AU6R0_sample_reads.fastq",
+  "crisprSeqWorkflow.barcodes_list": "/Users/mburger/dockeryard/test_data/AU6R0_sample_barcodes.csv",
+  "crisprSeqWorkflow.ref_fasta": "/Users/mburger/Data/Homo_sapiens_assembly19.fasta"
+}
