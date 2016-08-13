@@ -1,6 +1,10 @@
 {
   "crisprSeqWorkflow.barcodes_fastq": "/Users/mburger/dockeryard/test_data/AU6R0_sample_barcodes.fastq",
-  "crisprSeqWorkflow.ref_idxs": "/Users/mburger/dockeryard/crispr-seq/firecloud/hg19_files.txt",
+  "crisprSeqWorkflow.ref_idxs": "/Users/mburger/dockeryard/test_data/hg19_files.txt",
+  "crisprSeqWorkflow.indel_genes": "/Users/mburger/dockeryard/test_data/AU6R0_indel_genes.csv",
+  "crisprSeqWorkflow.neg_cntrl": "/Users/mburger/dockeryard/test_data/AU6R0_sample_negative_controls.csv",
+  "crisprSeqWorkflow.indel_cut_interval": "/Users/mburger/dockeryard/test_data/AU6R0_indel_cut_interval.csv",
+  "crisprSeqWorkflow.indel_cut_site": "/Users/mburger/dockeryard/test_data/AU6R0_indel_cut_site.csv",
   "crisprSeqWorkflow.reads_fastq": "/Users/mburger/dockeryard/test_data/AU6R0_sample_reads.fastq",
   "crisprSeqWorkflow.barcodes_list": "/Users/mburger/dockeryard/test_data/AU6R0_sample_barcodes.csv",
   "crisprSeqWorkflow.ref_fasta": "/Users/mburger/Data/Homo_sapiens_assembly19.fasta"

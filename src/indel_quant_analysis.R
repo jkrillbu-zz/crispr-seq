@@ -2,12 +2,13 @@
 args <- commandArgs(trailingOnly = TRUE)
 code_dir <- args[1]
 #code_dir <- "/Users/mburger/Documents/DNAseq_pipelines/targeted_CRISPR_SE"
-setwd(code_dir)
-source("LOF.R")
-source("load_annotations.R")
-source("indel_frac.R")
-source("indel_descriptions.R")
-source("get_data.R")
+#setwd(code_dir)
+source(file.path(code_dir,"get_data.R"))
+source(file.path(code_dir,"LOF.R"))
+source(file.path(code_dir,"load_annotations.R"))
+source(file.path(code_dir,"indel_frac.R"))
+source(file.path(code_dir,"indel_descriptions.R"))
+
 
 project_dir <- args[2]
 #id <- "AL23V"

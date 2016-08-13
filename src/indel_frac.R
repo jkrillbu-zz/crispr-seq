@@ -1,4 +1,4 @@
-source("~/Documents/crispr_dna/Code/v1/get_data.R")
+
 
 split_matrix <- function(m,numSplits){
   mats <- list()

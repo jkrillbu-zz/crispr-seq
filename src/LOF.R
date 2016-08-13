@@ -1,4 +1,4 @@
-source("~/Documents/crispr_dna/Code/v1/get_data.R")
+
 
 ##
 # Calculates a single LOF fraction treating each read individually, not going per unique indel

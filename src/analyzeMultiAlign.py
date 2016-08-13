@@ -87,7 +87,7 @@ def analyzeMult(sample,gene,read_list,target_interval,gene_interval,WT_writer,fd
 
 	if len(read_list) > 1:
 		left_read,right_read = findPair(read_list,target_interval,gene_interval)
-		if not(left_read == None) and not(right_read == None):
+		if (left_read is not None) and (right_read is not None):
 			left_pos,right_pos = indelPosition(left_read,right_read)
 			total_length = matchEnd(right_read.pos,right_read.cigar) - left_read.pos + 1
 			row = [left_read.qname,str(total_length),'0','4']
@@ -124,7 +124,7 @@ def iterateReads(sample,gene,bam_file,target_interval,gene_interval,files):
 
     #Sort the NA.bam which is a file full of the reads that didn't span the cut interval
 	#pysam.sort('-n', bam_file, os.path.join(os.path.dirname(bam_file),'NA.sorted'), catch_stdout=False)
-	call(["/usr/local/bin/samtools", "sort", "-n", bam_file, os.path.join(os.path.dirname(bam_file),"NA.sorted")])
+	call(["samtools", "sort", "-n", bam_file, os.path.join(os.path.dirname(bam_file),"NA.sorted")])
 	bam_file = os.path.join(os.path.dirname(bam_file),'NA.sorted.bam')
 
 	bamFP = pysam.Samfile(bam_file, "rb")
