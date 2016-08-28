@@ -7,10 +7,14 @@ workflow crisprSeqWorkflow {
 	File ref_idxs
 	File ref_fasta
 
-	File indel_cut_interval
-	File indel_cut_site
-	File indel_genes
-	File neg_cntrl
+	File gRNAs
+	File controls
+
+	call createInputsTask {
+		input:
+		gRNAs = gRNAs,
+		controls = controls
+	}
 
 	call splitBarcodesTask {
 		input: 
@@ -30,9 +34,9 @@ workflow crisprSeqWorkflow {
 		input:
 		bams=bwaAlignmentTask.bams,
 		idxs=bwaAlignmentTask.idxs,
-		indel_cut_interval=indel_cut_interval,
-		indel_cut_site=indel_cut_site,
-		indel_genes=indel_genes,
+		indel_cut_interval=createInputsTask.indel_cut_interval,
+		indel_cut_site=createInputsTask.indel_cut_site,
+		indel_genes=createInputsTask.indel_genes,
 		ref_idxs=ref_idxs,
 		ref_fasta=ref_fasta
 	}
@@ -41,10 +45,31 @@ workflow crisprSeqWorkflow {
 		input:
 		bams=bwaAlignmentTask.bams,
 		idxs=bwaAlignmentTask.idxs,
-		indel_cut_interval=indel_cut_interval,
-		indel_genes=indel_genes,
-		neg_cntrl=neg_cntrl
+		indel_cut_interval=createInputsTask.indel_cut_interval,
+		indel_genes=createInputsTask.indel_genes,
+		neg_cntrl=createInputsTask.neg_cntrl
 	}
+}
+
+task createInputsTask {
+	File gRNAs
+	File controls
+
+	command <<<
+	Rscript /usr/src/app/src/create_inputs.R ${gRNAs} ${controls}
+	>>>
+
+	output {
+		File indel_cut_interval = "indel_cut_interval.csv"
+		File indel_cut_site = "indel_cut_site.csv"
+		File indel_genes = "indel_genes.csv"
+		File neg_cntrl = "negative_controls.csv"
+	}
+
+	runtime {
+		docker: "mburger/crispr-seq"
+	}	
+
 }
 
 task splitBarcodesTask {
@@ -65,6 +90,7 @@ task splitBarcodesTask {
 
 	runtime {
 		docker: "mburger/crispr-seq"
+		disks: "local-disk 20 SSD"
 	}
 
 }
@@ -76,19 +102,32 @@ task bwaAlignmentTask {
 	File ref_fasta
 
 	command <<<
+	    FASTA=$(realpath ${ref_fasta})
+	    echo "ref_fasta=${ref_fasta}"
+	    echo "FASTA=$FASTA"
+	    #bwa index $FASTA
+		
+		/usr/src/app/src/bwaAlignmentTask.sh ${sep=',' file_glob} $FASTA 
+
 		mkdir Reads
-		cd Reads
-		/usr/src/app/src/bwaAlignmentTask.sh ${sep=',' file_glob} ${ref_fasta}
-		cd ..  
+		mv *.bam ./Reads/
+		mv *.bai ./Reads/
+		
 	>>>
 
 	output {
 		Array[File] bams = glob("Reads/*.bam")
 		Array[File] idxs = glob("Reads/*.bai")
+		#Array[File] refs = glob("seq-references/ensembl/hg19/seq/*")
+
 	}
 
 	runtime {
 		docker: "mburger/crispr-seq"
+		cpu: 6
+		memory: "16G"
+		disks: "local-disk 20 SSD"
+
 	}
 }
 
@@ -115,6 +154,7 @@ task novelIndelTask {
 
 	runtime {
 		docker: "mburger/crispr-seq"
+		memory: "4G"
 	}
 
 }
@@ -144,6 +184,9 @@ task indelAccuracyTask {
 
 	runtime {
 		docker: "mburger/crispr-seq"
+		cpu: 6
+		memory: "16G"
+		disks: "local-disk 20 SSD"
 	}
 
 }
