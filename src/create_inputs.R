@@ -30,9 +30,9 @@ indel_cut_interval <- cbind(indel_cut_interval,cut_sites - 25,cut_sites + 25)
 write.table(indel_cut_interval,file='indel_cut_interval.csv',sep=",",col.names = F, row.names=F,quote = F)
   
 #negative_controls
-negative_controls <- read.table(neg_control_file, quote="\"", comment.char="", stringsAsFactors=FALSE)
-if (ncol(negative_controls) == 1){
-  negative_controls <- matrix(rep(1,nrow(negative_controls)*nrow(gRNAs)),nrow=nrow(negative_controls),ncol=nrow(gRNAs),dimnames=list(negative_controls[,1],gRNAs$gene))
+negative_controls <- read.csv(neg_control_file, row.names=1, stringsAsFactors=FALSE)
+if (ncol(negative_controls) < 1){
+  negative_controls <- matrix(rep(1,nrow(negative_controls)*nrow(gRNAs)),nrow=nrow(negative_controls),ncol=nrow(gRNAs),dimnames=list(rownames(negative_controls),gRNAs$gene))
 }
 write.csv(negative_controls,file='negative_controls.csv',quote=F)
   

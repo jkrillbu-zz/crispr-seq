@@ -52,6 +52,7 @@ if (neg_cntrl != "NA"){
   #neg_samples <- read.csv(neg_cntrl, quote="\"", comment.char="", stringsAsFactors=FALSE)[,1]
   neg_samples <- read.csv(neg_cntrl, row.names=1, stringsAsFactors=FALSE)
   rownames(neg_samples) <- gsub(" ","",rownames(neg_samples))
+  neg_samples <- neg_samples[rownames(neg_samples) %in% rownames(indel_frac_table),]
 #   if (typeof(neg_samples) != "character"){
 #     neg_samples <- as.character(neg_samples)
 #   }
