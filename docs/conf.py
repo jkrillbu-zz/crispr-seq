@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # CRISPR-Seq documentation build configuration file, created by
-# sphinx-quickstart on Fri Sep  2 12:25:19 2016.
+# sphinx-quickstart on Wed Sep  7 13:12:06 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -29,10 +29,7 @@ import shlex
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.pngmath',
-    'sphinx.ext.ifconfig',
-]
+extensions = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -111,7 +108,7 @@ todo_include_todos = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

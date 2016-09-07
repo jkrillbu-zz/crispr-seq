@@ -1,5 +1,5 @@
 .. CRISPR-Seq documentation master file, created by
-   sphinx-quickstart on Fri Sep  2 12:25:19 2016.
+   sphinx-quickstart on Wed Sep  7 13:12:06 2016.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
