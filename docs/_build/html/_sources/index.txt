@@ -3,20 +3,26 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to CRISPR-Seq's documentation!
+CRISPR-Seq Workflow Documentation
 ======================================
 
-Contents:
+What is CRISPR-Seq?
+-------------------
+
+	An analysis pipeline for aligning sequencing reads, quantification and statistical significance of indels, and visualizing indel distributions. 
+
+How CRISPR-Seq works
+--------------------
+
+	Algorithm description. 
+
+Using CRISPR-Seq
+----------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
+   firecloud
+   docker
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
