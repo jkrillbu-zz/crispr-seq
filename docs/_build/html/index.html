@@ -47,24 +47,64 @@
             
   <div class="section" id="crispr-seq-workflow-documentation">
 <h1>CRISPR-Seq Workflow Documentation<a class="headerlink" href="#crispr-seq-workflow-documentation" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div>Display a table of contents (left) and logo (right).</div></blockquote>
 <div class="section" id="what-is-crispr-seq">
 <h2>What is CRISPR-Seq?<a class="headerlink" href="#what-is-crispr-seq" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div>An analysis pipeline for aligning sequencing reads, quantification and statistical significance of indels, and visualizing indel distributions.</div></blockquote>
+<div><dl class="docutils">
+<dt>A sequence analysis pipeline for CRISPR/cas9 edited DNA. Starting from multiplex single-end reads and a gRNA annotation of predicted cutsites, the pipeline produces</dt>
+<dd><ol class="first arabic simple">
+<li>aligned bam files per sample</li>
+<li>characterization of all indels that overlap a predicted cutsite</li>
+</ol>
+<p class="last">3. quantification of indel reads versus total reads for each sample/gene
+3. statistical significance of indel fractions
+4. QC of indel size detection accuracy per gene
+5. indel distribution plots per gene
+6. interactive sunburst to investigate population dynamics of indels within a sample/gene</p>
+</dd>
+</dl>
+<p>Current design assumes long 300 bp single-end reads with predicted gRNA binding site near the center of the read.</p>
+<p>Sequencing the cutsite of CRISPR/cas9 experiments is useful for validating that the system is causing significant loss of function. Experiments resulting in significant LOF fractions must have sufficient Cas9 activity, guide efficiency, and tolerance to the loss-of-function mutation. Finally, the ability to track population dynamics over time lends itself to many creative applications.</p>
+</div></blockquote>
 </div>
-<div class="section" id="how-crispr-seq-works">
-<h2>How CRISPR-Seq works<a class="headerlink" href="#how-crispr-seq-works" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="algorithm-description">
+<h2>Algorithm Description<a class="headerlink" href="#algorithm-description" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div>Algorithm description.</div></blockquote>
 </div>
-<div class="section" id="using-crispr-seq">
-<h2>Using CRISPR-Seq<a class="headerlink" href="#using-crispr-seq" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="running-crispr-seq">
+<h2>Running CRISPR-Seq<a class="headerlink" href="#running-crispr-seq" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="firecloud.html">FireCloud Workflow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="docker.html">Docker Image</a></li>
+<li class="toctree-l1"><a class="reference internal" href="firecloud.html">FireCloud Workflow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#creating-a-google-cloud-account">Creating a Google Cloud Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#upload-grna-configuration">Upload gRNA configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#create-firecloud-account">Create FireCloud Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#import-crispr-seq-workspace">Import CRISPR-Seq Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#link-data-to-workspace">Link Data to Workspace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#launch-analysis">Launch Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="firecloud.html#view-results">View Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html">Docker Image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#building-or-pulling-image">Building or Pulling Image</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#running-workflow">Running Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#running-individual-tasks">Running Individual Tasks</a></li>
+</ul>
+</li>
 </ul>
 </div>
+</div>
+<div class="section" id="citing">
+<h2>Citing<a class="headerlink" href="#citing" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="help">
+<h2>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Please contact <a class="reference external" href="mailto:mburger&#37;&#52;&#48;broadinstitute&#46;org">mburger<span>&#64;</span>broadinstitute<span>&#46;</span>org</a> with any questions.</div></blockquote>
 </div>
 </div>
 
@@ -78,8 +118,10 @@
   <ul>
 <li><a class="reference internal" href="#">CRISPR-Seq Workflow Documentation</a><ul>
 <li><a class="reference internal" href="#what-is-crispr-seq">What is CRISPR-Seq?</a></li>
-<li><a class="reference internal" href="#how-crispr-seq-works">How CRISPR-Seq works</a></li>
-<li><a class="reference internal" href="#using-crispr-seq">Using CRISPR-Seq</a></li>
+<li><a class="reference internal" href="#algorithm-description">Algorithm Description</a></li>
+<li><a class="reference internal" href="#running-crispr-seq">Running CRISPR-Seq</a></li>
+<li><a class="reference internal" href="#citing">Citing</a></li>
+<li><a class="reference internal" href="#help">Help</a></li>
 </ul>
 </li>
 </ul>
