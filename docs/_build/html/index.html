@@ -30,8 +30,7 @@
   
 
   
-    <link rel="top" title="CRISPR-Seq 1 documentation" href="#"/>
-        <link rel="next" title="CRISPR-Seq Workflow Documentation" href=""/> 
+    <link rel="top" title="CRISPR-Seq 1 documentation" href="#"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -62,29 +61,28 @@
         
           
           
-              <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">CRISPR-Seq Workflow Documentation</a><ul class="simple">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">CRISPR-Seq Workflow Documentation</a></li>
+<li><a class="reference internal" href="#why-use-crispr-seq">Why use CRISPR-Seq?</a></li>
+<li><a class="reference internal" href="#algorithm-description">Algorithm Description</a></li>
+<li><a class="reference internal" href="#running-crispr-seq">Running CRISPR-Seq</a></li>
+<li><a class="reference internal" href="#firecloud-workflow">FireCloud Workflow</a><ul>
+<li><a class="reference internal" href="#register-a-firecloud-account">Register a FireCloud Account</a></li>
+<li><a class="reference internal" href="#create-a-workspace">Create a Workspace</a></li>
+<li><a class="reference internal" href="#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
+<li><a class="reference internal" href="#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
+<li><a class="reference internal" href="#upload-grna-annotation">Upload gRNA Annotation</a></li>
+<li><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
+<li><a class="reference internal" href="#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
+<li><a class="reference internal" href="#launch-analysis">Launch Analysis</a></li>
+<li><a class="reference internal" href="#view-results">View Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#why-use-crispr-seq">Why use CRISPR-Seq?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#algorithm-description">Algorithm Description</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#running-crispr-seq">Running CRISPR-Seq</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#firecloud-workflow">FireCloud Workflow</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#register-a-firecloud-account">Register a FireCloud Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-a-workspace">Create a Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-grna-annotation">Upload gRNA Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#launch-analysis">Launch Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#view-results">View Results</a></li>
+<li><a class="reference internal" href="#citing">Citing</a></li>
+<li><a class="reference internal" href="#help">Help</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#citing">Citing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#help">Help</a></li>
-</ul>
-
+</div>
           
         
       </div>
@@ -125,30 +123,6 @@
 <p>Sequencing the cutsite of CRISPR/cas9 experiments is important validating that the system is causing significant loss of function. Experiments resulting in significant LOF fractions must have sufficient Cas9 activity, guide efficiency, and tolerance to the loss-of-function mutation. Finally, the ability to track population dynamics over time lends itself to many creative applications.</p>
 <p>CRISPR-Seq is a sequence analysis pipeline for CRISPR/cas9 edited DNA.</p>
 </div></blockquote>
-<div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">CRISPR-Seq Workflow Documentation</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#why-use-crispr-seq">Why use CRISPR-Seq?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#algorithm-description">Algorithm Description</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#running-crispr-seq">Running CRISPR-Seq</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#firecloud-workflow">FireCloud Workflow</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#register-a-firecloud-account">Register a FireCloud Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-a-workspace">Create a Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-grna-annotation">Upload gRNA Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#launch-analysis">Launch Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#view-results">View Results</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#citing">Citing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#help">Help</a></li>
-</ul>
-</div>
 </div>
 <div class="section" id="why-use-crispr-seq">
 <h1>Why use CRISPR-Seq?<a class="headerlink" href="#why-use-crispr-seq" title="Permalink to this headline">¶</a></h1>
@@ -468,13 +442,6 @@
 
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="" class="btn btn-neutral float-right" title="CRISPR-Seq Workflow Documentation">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-    </div>
   
 
   <hr/>

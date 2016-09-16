@@ -12,10 +12,6 @@ CRISPR-Seq Workflow Documentation
 
 	CRISPR-Seq is a sequence analysis pipeline for CRISPR/cas9 edited DNA.
 
-.. toctree::
-   :maxdepth: 2
-
-   index
 
 Why use CRISPR-Seq?
 ===================
