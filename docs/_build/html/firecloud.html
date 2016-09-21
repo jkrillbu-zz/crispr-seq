@@ -61,29 +61,22 @@
         
           
           
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">CRISPR-Seq Workflow Documentation</a><ul class="simple">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">FireCloud Workflow</a><ul>
+<li><a class="reference internal" href="#register-a-firecloud-account">Register a FireCloud Account</a></li>
+<li><a class="reference internal" href="#create-a-workspace">Create a Workspace</a></li>
+<li><a class="reference internal" href="#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
+<li><a class="reference internal" href="#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
+<li><a class="reference internal" href="#upload-grna-annotation">Upload gRNA Annotation</a></li>
+<li><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
+<li><a class="reference internal" href="#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
+<li><a class="reference internal" href="#launch-analysis">Launch Analysis</a></li>
+<li><a class="reference internal" href="#view-results">View Results</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#why-use-crispr-seq">Why use CRISPR-Seq?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#algorithm-description">Algorithm Description</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#running-crispr-seq">Running CRISPR-Seq</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#firecloud-workflow">FireCloud Workflow</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="index.html#register-a-firecloud-account">Register a FireCloud Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#create-a-workspace">Create a Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#upload-grna-annotation">Upload gRNA Annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#upload-negative-control-annotation">Upload negative control annotation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#launch-analysis">Launch Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="index.html#view-results">View Results</a></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#citing">Citing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="index.html#help">Help</a></li>
-</ul>
-
+</div>
           
         
       </div>
@@ -228,42 +221,42 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>SMC3</td>
+<tr class="row-even"><td>Gene1</td>
 <td>+</td>
 <td>10:112341797</td>
 <td>10:112341673-112341888</td>
 </tr>
-<tr class="row-odd"><td>TET2</td>
+<tr class="row-odd"><td>Gene2</td>
 <td>-</td>
 <td>4:106155180</td>
 <td>4:106155115-106155320</td>
 </tr>
-<tr class="row-even"><td>ASXL1</td>
+<tr class="row-even"><td>Gene3</td>
 <td>-</td>
 <td>20:30956834</td>
 <td>20:30956741-30956945</td>
 </tr>
-<tr class="row-odd"><td>NF1</td>
+<tr class="row-odd"><td>Gene4</td>
 <td>-</td>
 <td>17:29422368</td>
 <td>17:29422233-29422455</td>
 </tr>
-<tr class="row-even"><td>DNMT3A</td>
+<tr class="row-even"><td>Gene5</td>
 <td>+</td>
 <td>2:25523085</td>
 <td>2:25522993-25523179</td>
 </tr>
-<tr class="row-odd"><td>RUNX1</td>
+<tr class="row-odd"><td>Gene6</td>
 <td>+</td>
 <td>21:36421160</td>
 <td>21:36421063-36421273</td>
 </tr>
-<tr class="row-even"><td>AS12</td>
+<tr class="row-even"><td>Gene7</td>
 <td>+</td>
 <td>20:31022712</td>
 <td>20:31022643-31022847</td>
 </tr>
-<tr class="row-odd"><td>STAG2</td>
+<tr class="row-odd"><td>Gene8</td>
 <td>+</td>
 <td>X:123195699</td>
 <td>X:123195623-123195747</td>
@@ -280,26 +273,26 @@
 <p>If negative control samples only serve as negative controls for particular gene targets, a binary sample by gene matrix can be used to indicate which sample/gene pairs are negative controls.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="10%" />
-<col width="10%" />
-<col width="12%" />
-<col width="10%" />
-<col width="10%" />
-<col width="12%" />
-<col width="8%" />
-<col width="12%" />
-<col width="14%" />
+<col width="9%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">&nbsp;</th>
-<th class="head">SMC3</th>
-<th class="head">ASXL1</th>
-<th class="head">TET2</th>
-<th class="head">AS12</th>
-<th class="head">STAG2</th>
-<th class="head">NF1</th>
-<th class="head">RUNX1</th>
-<th class="head">DNMT3A</th>
+<th class="head">Gene1</th>
+<th class="head">Gene2</th>
+<th class="head">Gene3</th>
+<th class="head">Gene4</th>
+<th class="head">Gene5</th>
+<th class="head">Gene6</th>
+<th class="head">Gene7</th>
+<th class="head">Gene8</th>
 </tr>
 </thead>
 <tbody valign="top">

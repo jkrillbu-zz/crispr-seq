@@ -6,41 +6,61 @@
 CRISPR-Seq Workflow Documentation
 ======================================
 
-	Display a table of contents (left) and logo (right).
+	Sequencing the predicted cutsites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. In addition to validation, sequencing predicted cut sites could also provide more complex understanding of population dynamics. For example, one might compare the distribution of indels created in vitro to the distribution after the cells are subjected to in vivo selection. 
 
-	Sequencing the cutsite of CRISPR/cas9 experiments is important validating that the system is causing significant loss of function. Experiments resulting in significant LOF fractions must have sufficient Cas9 activity, guide efficiency, and tolerance to the loss-of-function mutation. Finally, the ability to track population dynamics over time lends itself to many creative applications. 
-
-	CRISPR-Seq is a sequence analysis pipeline for CRISPR/cas9 edited DNA.
-
+	The CRISPR-Seq analysis pipeline inputs single-end (SE) targeted sequencing reads that span predicted CRISPR/cas9 cut sites and analyzes the reads for CRISPR/cas9 induced indels. The algorithm is more accurate than traditional indel callers at detecting large indels (>20bp) in SE reads by leveraging the unique circumstance that CRISPR/cas9 experiments have predicted breakpoints based on gRNA sequence. Convient options for running the analysis pipeline exist for both computational and experimental scientists.    
 
 Why use CRISPR-Seq?
 ===================
 
-	Simple inputs (multiplex single-end reads and a gRNA annotation of predicted cutsites)
+	High accuracy 
 
-	Higher accuracy indel detection with single-end reads using predicted cutsites.
+		- Improved detection of large indels (>20bp) using predicted cut sites
 
-	Easy for experimentalists to run using the FireCloud website (Does not require use of command line)
+	Run with FireCloud
 
-	Cheap (Approximately x dollars per GB of FASTQ file). Billing is through Google Cloud services.
+		- Easy to use web interface for experimentalists 
+		- Cheap (X GB FASTQ file costs approximately X for computation and X for storage)
+		- Billing is managed by Google Cloud services  
 
-	Source code available dependency free using Docker image for computationalists. 
+	Simple inputs
 
-	Output includes:
+		- single-end reads in FASTQ form 
+		- barcode annotation (multiplex only)
+		- gRNA annotation 
+		- negative controls 
+
+	Comprehensive output
 
 		- aligned bam files per sample
 		- characterization of all indels that overlap a predicted cutsite
-		- quantification of indel reads versus total reads for each sample/gene
-		- statistical significance of indel fractions
-		- QC of indel size detection accuracy per gene
-		- indel distribution plots per gene
-		- interactive sunburst to investigate population dynamics of indels within a sample/gene
+		- quantification of indel reads versus total reads for each sample/target pair
+		- statistical significance of indel allele fractions
+		- QC of indel size detection accuracy per target
+		- indel distribution plots per target 
+		- sunburst plots to investigate population dynamics
+
+	Open source
+
+		- Docker image with all source code
+		- Option to run workflow with Snakemake
 
 
 Algorithm Description
 =====================
 
-	Current design assumes long 300 bp single-end reads with predicted gRNA binding site near the center of the read.
+	The algorithm is fine-tuned for detecting indels in 300nt single-end reads where the predicted gRNA binding site is near the center of the read. 
+
+	.. image:: _static/SE_design.png
+	   :scale: 70%
+
+	|
+
+	The alignment is a two step process. First, a basic Smith-Waterman alignment identifies wild-type reads and small indels. Second, a search for reads with fragments that have high quality mappings to the reference either before or after the 50bp region around the predicted cutsite is used to identify reads with large indels. 
+
+	.. image:: _static/Two_Step_Algorithm.png
+
+
 
 Running CRISPR-Seq
 ==================
