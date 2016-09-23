@@ -73,7 +73,7 @@ Upload Multiplex Barcodes
 Upload gRNA Annotation
 -------------------------
 
-	The gRNAs used should be listed in a comma separated text file (.csv) with four columns; gene, strand, cut, and amplicon. Below is an example table for an experiment targeting 8 genes with one guide per gene. The column definitions are as follows:
+	The gRNAs used should be listed in a comma separated text file (.csv) with four columns; gene, strand, cut, and amplicon. Below is an example table for an experiment targeting four genes with one guide per gene. The column definitions are as follows:
 
 	- ``gene``:	Any unique gene symbol identifier. If the same gene is targeted with multiple guides, say STAG2 is targeted with two gRNAs, the names should be something like STAG2_1 and STAG2_2.
 	- ``strand``: Indicates whether the gene is on the forward or reverse strand using + or - respectively. 
@@ -92,14 +92,6 @@ Upload gRNA Annotation
 	+------+------+------------+----------------------+
 	|Gene4 |\-    |17:29422368 |17:29422233-29422455  |
 	+------+------+------------+----------------------+
-	|Gene5 |\+    |2:25523085  |2:25522993-25523179   |
-	+------+------+------------+----------------------+
-	|Gene6 |\+    |21:36421160 |21:36421063-36421273  |
-	+------+------+------------+----------------------+
-	|Gene7 |\+    |20:31022712 |20:31022643-31022847  |
-	+------+------+------------+----------------------+
-	|Gene8 |\+    |X:123195699 |X:123195623-123195747 |
-	+------+------+------------+----------------------+
 
 	Save the gRNA annotation table as a .csv and upload it to the workspace Google Bucket.
 
@@ -108,35 +100,90 @@ Upload negative control annotation
 
 	Negative controls can be annotated in two forms; a list of samples, or a sample by gene matrix. If each negative control sample is a negative control for all target genes, the negative control samples can be listed with one on each line:
 
+	+--------+
+	|sample  |
+	+========+
+	|Sample1 |
+	+--------+
+	|Sample2 |
+	+--------+
+	|Sample3 |
+	+--------+
+	|Sample4 |
+	+--------+
+
 	If negative control samples only serve as negative controls for particular gene targets, a binary sample by gene matrix can be used to indicate which sample/gene pairs are negative controls.
 
-	+-----+------+------+------+------+------+------+------+------+
-	|     |Gene1 |Gene2 |Gene3 |Gene4 |Gene5 |Gene6 |Gene7 |Gene8 |
-	+=====+======+======+======+======+======+======+======+======+
-	|BC74 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC75 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC76 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC77 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC78 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC79 |1     |1     |1     |1     |0     |0     |0     |0     |
-	+-----+------+------+------+------+------+------+------+------+
-	|BC85 |1     |0     |0     |0     |0     |1     |1     |1     |
-	+-----+------+------+------+------+------+------+------+------+
-
+	+--------+------+------+------+------+
+	|        |Gene1 |Gene2 |Gene3 |Gene4 |
+	+========+======+======+======+======+
+	|Sample1 |1     |1     |0     |0     |
+	+--------+------+------+------+------+
+	|Sample2 |1     |1     |0     |0     |
+	+--------+------+------+------+------+
+	|Sample3 |0     |0     |1     |1     |
+	+--------+------+------+------+------+
+	|Sample4 |0     |0     |1     |1     |
+	+--------+------+------+------+------+
 
 
 Add Data Entity to Workspace
------------------------------------
+----------------------------
 
-	From the Data tab within the workspace, select import data. Upload a file with 1 row and 
+	The final required configuration file is simply a list of files that were uploaded to the workspace's Google bucket. This includes the fastq and annotation files (barcode, gRNA, and negative control). Create a table with a single row and the following column headers:
+
+	+----------------------+--------------+---------------+------------+----------+----------+----------------------------------------------------+-------------------------------------------------------------------+
+	|entity:participant_id |barcodes_list |barcodes_fastq |reads_fastq |gRNAs     |controls  |ref_idxs                                            |ref_fasta                                                          |
+	+======================+==============+===============+============+==========+==========+====================================================+===================================================================+
+	|USER_VARIABLE         |USER_FILE     |USER_FILE      |USER_FILE   |USER_FILE |USER_FILE |gs://seq-references/ensembl/hg19/seq/hg19_files.txt |gs://seq-references/ensembl/hg19/seq/Homo_sapiens_assembly19.fasta |
+	+----------------------+--------------+---------------+------------+----------+----------+----------------------------------------------------+-------------------------------------------------------------------+
+
+	The fields marked with ``USER`` are specific to the experiment. The ``ref_idxs`` and ``ref_fasta`` fields are provided and constant for all experiments using the hg19 reference.
+
+	- ``entity:participant_id``: Unique experiment ID to differentiate workflow results within the workspace
+	- ``barcodes_list``: Link to the multiplex barcode annotation CSV file.
+	- ``barcodes_fastq``: Link to fastq file containing read barcodes.
+	- ``reads_fastq``: Link to fastq file containing reads.
+	- ``gRNAs``: Link to gRNA annotation CSV file.
+	- ``controls``: Link to negative control annotation CSV file.
+	- ``ref_idxs``: ``gs://seq-references/ensembl/hg19/seq/hg19_files.txt``
+	- ``ref_fasta``: ``gs://seq-references/ensembl/hg19/seq/Homo_sapiens_assembly19.fasta``
+
+	The Google bucket format for links to files is ``gs://bucketID/filename``, where the bucketID is listed on the workspace summary page and the filename is user defined. 
+
+	.. image:: _static/bucket_ID.png
+
+	|
+
+	Given a barcode annotation that was named ``AU6R0_barcodes.csv`` by the user and the bucket pictured above, the link would be ``gs://fc-ae7d8f79-257d-4763-9128-27edfc148e42/AU6R0_barcodes.csv``.
+
+	Once the table is complete, save it as a tab delimited text file and import it as a Data entity into the workspace using the Data tab within the workspace. 
+
+	.. image:: _static/import_data.png
 
 Launch Analysis
 ---------------
+
+	To run the workflow, navigate to the ``Method Configurations`` tab of the workspace and select the ``crisprseq`` method. 
+
+	.. image:: _static/select_method.png
+
+	|
+
+	From method configuration view select ``Launch Analysis...``.
+
+	.. image:: _static/launch_analysis.png
+
+	|
+
+	Select the Data entity to run the workflow on, and launch the analysis. 
+
+	.. image:: _static/launch_analysis2.png
+
+Monitor Analysis
+----------------
+
+	Refresh the ``Monitor`` tab of the workspace after 4 hours to make sure the analysis is completed. If the analysis exceeds this time period, it is recommended to abort the analysis to avoid excess billing. 
 
 View Results
 ------------

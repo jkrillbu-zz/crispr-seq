@@ -6,9 +6,9 @@
 CRISPR-Seq Workflow Documentation
 ======================================
 
-	Sequencing the predicted cutsites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. In addition to validation, sequencing predicted cut sites could also provide more complex understanding of population dynamics. For example, one might compare the distribution of indels created in vitro to the distribution after the cells are subjected to in vivo selection. 
+	Sequencing the predicted cut sites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. Sequence analysis of predicted cut sites also facilitates studying the complex population dynamics of CRISPR/cas9 edited cells under positive or negative selection. 
 
-	The CRISPR-Seq analysis pipeline inputs single-end (SE) targeted sequencing reads that span predicted CRISPR/cas9 cut sites and analyzes the reads for CRISPR/cas9 induced indels. The algorithm is more accurate than traditional indel callers at detecting large indels (>20bp) in SE reads by leveraging the unique circumstance that CRISPR/cas9 experiments have predicted breakpoints based on gRNA sequence. Convient options for running the analysis pipeline exist for both computational and experimental scientists.    
+	The CRISPR-Seq analysis workflow inputs single-end targeted sequencing reads that span predicted CRISPR/cas9 cut sites and outputs an analysis of LOF allele fractions and detailed indel descriptions. The CRISPR-Seq algorithm is more accurate than traditional indel callers at detecting large indels (>20bp) by using the predicted cut sites based on gRNA sequence which are unique to CRISPR/cas9 experiments. Convient options for running the analysis pipeline exist for both computational and laboratory scientists.    
 
 Why use CRISPR-Seq?
 ===================
@@ -20,7 +20,7 @@ Why use CRISPR-Seq?
 	Run with FireCloud
 
 		- Easy to use web interface for experimentalists 
-		- Cheap (X GB FASTQ file costs approximately X for computation and X for storage)
+		- Cheap (X GB FASTQ file costs approximately Y for computation and Z for storage)
 		- Billing is managed by Google Cloud services  
 
 	Simple inputs

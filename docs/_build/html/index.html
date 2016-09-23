@@ -76,6 +76,7 @@
 <li><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
 <li><a class="reference internal" href="#add-data-entity-to-workspace">Add Data Entity to Workspace</a></li>
 <li><a class="reference internal" href="#launch-analysis">Launch Analysis</a></li>
+<li><a class="reference internal" href="#monitor-analysis">Monitor Analysis</a></li>
 <li><a class="reference internal" href="#view-results">View Results</a></li>
 </ul>
 </li>
@@ -119,8 +120,8 @@
   <div class="section" id="crispr-seq-workflow-documentation">
 <h1>CRISPR-Seq Workflow Documentation<a class="headerlink" href="#crispr-seq-workflow-documentation" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div><p>Sequencing the predicted cutsites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. In addition to validation, sequencing predicted cut sites could also provide more complex understanding of population dynamics. For example, one might compare the distribution of indels created in vitro to the distribution after the cells are subjected to in vivo selection.</p>
-<p>The CRISPR-Seq analysis pipeline inputs single-end (SE) targeted sequencing reads that span predicted CRISPR/cas9 cut sites and analyzes the reads for CRISPR/cas9 induced indels. The algorithm is more accurate than traditional indel callers at detecting large indels (&gt;20bp) in SE reads by leveraging the unique circumstance that CRISPR/cas9 experiments have predicted breakpoints based on gRNA sequence. Convient options for running the analysis pipeline exist for both computational and experimental scientists.</p>
+<div><p>Sequencing the predicted cut sites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. Sequence analysis of predicted cut sites also facilitates studying the complex population dynamics of CRISPR/cas9 edited cells under positive or negative selection.</p>
+<p>The CRISPR-Seq analysis workflow inputs single-end targeted sequencing reads that span predicted CRISPR/cas9 cut sites and outputs an analysis of LOF allele fractions and detailed indel descriptions. The CRISPR-Seq algorithm is more accurate than traditional indel callers at detecting large indels (&gt;20bp) by using the predicted cut sites based on gRNA sequence which are unique to CRISPR/cas9 experiments. Convient options for running the analysis pipeline exist for both computational and laboratory scientists.</p>
 </div></blockquote>
 </div>
 <div class="section" id="why-use-crispr-seq">
@@ -136,7 +137,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>Easy to use web interface for experimentalists</li>
-<li>Cheap (X GB FASTQ file costs approximately X for computation and X for storage)</li>
+<li>Cheap (X GB FASTQ file costs approximately Y for computation and Z for storage)</li>
 <li>Billing is managed by Google Cloud services</li>
 </ul>
 </div></blockquote>
@@ -276,7 +277,7 @@
 <div class="section" id="upload-grna-annotation">
 <h2>Upload gRNA Annotation<a class="headerlink" href="#upload-grna-annotation" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>The gRNAs used should be listed in a comma separated text file (.csv) with four columns; gene, strand, cut, and amplicon. Below is an example table for an experiment targeting 8 genes with one guide per gene. The column definitions are as follows:</p>
+<div><p>The gRNAs used should be listed in a comma separated text file (.csv) with four columns; gene, strand, cut, and amplicon. Below is an example table for an experiment targeting four genes with one guide per gene. The column definitions are as follows:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">gene</span></code>:     Any unique gene symbol identifier. If the same gene is targeted with multiple guides, say STAG2 is targeted with two gRNAs, the names should be something like STAG2_1 and STAG2_2.</li>
 <li><code class="docutils literal"><span class="pre">strand</span></code>: Indicates whether the gene is on the forward or reverse strand using + or - respectively.</li>
@@ -318,26 +319,6 @@
 <td>17:29422368</td>
 <td>17:29422233-29422455</td>
 </tr>
-<tr class="row-even"><td>Gene5</td>
-<td>+</td>
-<td>2:25523085</td>
-<td>2:25522993-25523179</td>
-</tr>
-<tr class="row-odd"><td>Gene6</td>
-<td>+</td>
-<td>21:36421160</td>
-<td>21:36421063-36421273</td>
-</tr>
-<tr class="row-even"><td>Gene7</td>
-<td>+</td>
-<td>20:31022712</td>
-<td>20:31022643-31022847</td>
-</tr>
-<tr class="row-odd"><td>Gene8</td>
-<td>+</td>
-<td>X:123195699</td>
-<td>X:123195623-123195747</td>
-</tr>
 </tbody>
 </table>
 <p>Save the gRNA annotation table as a .csv and upload it to the workspace Google Bucket.</p>
@@ -347,18 +328,33 @@
 <h2>Upload negative control annotation<a class="headerlink" href="#upload-negative-control-annotation" title="Permalink to this headline">¶</a></h2>
 <blockquote>
 <div><p>Negative controls can be annotated in two forms; a list of samples, or a sample by gene matrix. If each negative control sample is a negative control for all target genes, the negative control samples can be listed with one on each line:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">sample</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Sample1</td>
+</tr>
+<tr class="row-odd"><td>Sample2</td>
+</tr>
+<tr class="row-even"><td>Sample3</td>
+</tr>
+<tr class="row-odd"><td>Sample4</td>
+</tr>
+</tbody>
+</table>
 <p>If negative control samples only serve as negative controls for particular gene targets, a binary sample by gene matrix can be used to indicate which sample/gene pairs are negative controls.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="9%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
-<col width="11%" />
+<col width="25%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
+<col width="19%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">&nbsp;</th>
@@ -366,80 +362,30 @@
 <th class="head">Gene2</th>
 <th class="head">Gene3</th>
 <th class="head">Gene4</th>
-<th class="head">Gene5</th>
-<th class="head">Gene6</th>
-<th class="head">Gene7</th>
-<th class="head">Gene8</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>BC74</td>
+<tr class="row-even"><td>Sample1</td>
 <td>1</td>
 <td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
 <td>0</td>
 <td>0</td>
 </tr>
-<tr class="row-odd"><td>BC75</td>
+<tr class="row-odd"><td>Sample2</td>
 <td>1</td>
 <td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
 <td>0</td>
 <td>0</td>
 </tr>
-<tr class="row-even"><td>BC76</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
+<tr class="row-even"><td>Sample3</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0</td>
+<td>1</td>
+<td>1</td>
 </tr>
-<tr class="row-odd"><td>BC77</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
+<tr class="row-odd"><td>Sample4</td>
 <td>0</td>
 <td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="row-even"><td>BC78</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="row-odd"><td>BC79</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="row-even"><td>BC85</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
 <td>1</td>
 <td>1</td>
 </tr>
@@ -450,10 +396,83 @@
 <div class="section" id="add-data-entity-to-workspace">
 <h2>Add Data Entity to Workspace<a class="headerlink" href="#add-data-entity-to-workspace" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div>From the Data tab within the workspace, select import data. Upload a file with 1 row and</div></blockquote>
+<div><p>The final required configuration file is simply a list of files that were uploaded to the workspace&#8217;s Google bucket. This includes the fastq and annotation files (barcode, gRNA, and negative control). Create a table with a single row and the following column headers:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="26%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">entity:participant_id</th>
+<th class="head">barcodes_list</th>
+<th class="head">barcodes_fastq</th>
+<th class="head">reads_fastq</th>
+<th class="head">gRNAs</th>
+<th class="head">controls</th>
+<th class="head">ref_idxs</th>
+<th class="head">ref_fasta</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>USER_VARIABLE</td>
+<td>USER_FILE</td>
+<td>USER_FILE</td>
+<td>USER_FILE</td>
+<td>USER_FILE</td>
+<td>USER_FILE</td>
+<td>gs://seq-references/ensembl/hg19/seq/hg19_files.txt</td>
+<td>gs://seq-references/ensembl/hg19/seq/Homo_sapiens_assembly19.fasta</td>
+</tr>
+</tbody>
+</table>
+<p>The fields marked with <code class="docutils literal"><span class="pre">USER</span></code> are specific to the experiment. The <code class="docutils literal"><span class="pre">ref_idxs</span></code> and <code class="docutils literal"><span class="pre">ref_fasta</span></code> fields are provided and constant for all experiments using the hg19 reference.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">entity:participant_id</span></code>: Unique experiment ID to differentiate workflow results within the workspace</li>
+<li><code class="docutils literal"><span class="pre">barcodes_list</span></code>: Link to the multiplex barcode annotation CSV file.</li>
+<li><code class="docutils literal"><span class="pre">barcodes_fastq</span></code>: Link to fastq file containing read barcodes.</li>
+<li><code class="docutils literal"><span class="pre">reads_fastq</span></code>: Link to fastq file containing reads.</li>
+<li><code class="docutils literal"><span class="pre">gRNAs</span></code>: Link to gRNA annotation CSV file.</li>
+<li><code class="docutils literal"><span class="pre">controls</span></code>: Link to negative control annotation CSV file.</li>
+<li><code class="docutils literal"><span class="pre">ref_idxs</span></code>: <code class="docutils literal"><span class="pre">gs://seq-references/ensembl/hg19/seq/hg19_files.txt</span></code></li>
+<li><code class="docutils literal"><span class="pre">ref_fasta</span></code>: <code class="docutils literal"><span class="pre">gs://seq-references/ensembl/hg19/seq/Homo_sapiens_assembly19.fasta</span></code></li>
+</ul>
+<p>The Google bucket format for links to files is <code class="docutils literal"><span class="pre">gs://bucketID/filename</span></code>, where the bucketID is listed on the workspace summary page and the filename is user defined.</p>
+<img alt="_images/bucket_ID.png" src="_images/bucket_ID.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Given a barcode annotation that was named <code class="docutils literal"><span class="pre">AU6R0_barcodes.csv</span></code> by the user and the bucket pictured above, the link would be <code class="docutils literal"><span class="pre">gs://fc-ae7d8f79-257d-4763-9128-27edfc148e42/AU6R0_barcodes.csv</span></code>.</p>
+<p>Once the table is complete, save it as a tab delimited text file and import it as a Data entity into the workspace using the Data tab within the workspace.</p>
+<img alt="_images/import_data.png" src="_images/import_data.png" />
+</div></blockquote>
 </div>
 <div class="section" id="launch-analysis">
 <h2>Launch Analysis<a class="headerlink" href="#launch-analysis" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>To run the workflow, navigate to the <code class="docutils literal"><span class="pre">Method</span> <span class="pre">Configurations</span></code> tab of the workspace and select the <code class="docutils literal"><span class="pre">crisprseq</span></code> method.</p>
+<img alt="_images/select_method.png" src="_images/select_method.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>From method configuration view select <code class="docutils literal"><span class="pre">Launch</span> <span class="pre">Analysis...</span></code>.</p>
+<img alt="_images/launch_analysis.png" src="_images/launch_analysis.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Select the Data entity to run the workflow on, and launch the analysis.</p>
+<img alt="_images/launch_analysis2.png" src="_images/launch_analysis2.png" />
+</div></blockquote>
+</div>
+<div class="section" id="monitor-analysis">
+<h2>Monitor Analysis<a class="headerlink" href="#monitor-analysis" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>Refresh the <code class="docutils literal"><span class="pre">Monitor</span></code> tab of the workspace after 4 hours to make sure the analysis is completed. If the analysis exceeds this time period, it is recommended to abort the analysis to avoid excess billing.</div></blockquote>
 </div>
 <div class="section" id="view-results">
 <h2>View Results<a class="headerlink" href="#view-results" title="Permalink to this headline">¶</a></h2>
