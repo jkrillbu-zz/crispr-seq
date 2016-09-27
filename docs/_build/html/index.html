@@ -70,7 +70,8 @@
 <li><a class="reference internal" href="#firecloud-workflow">FireCloud Workflow</a><ul>
 <li><a class="reference internal" href="#register-a-firecloud-account">Register a FireCloud Account</a></li>
 <li><a class="reference internal" href="#create-a-workspace">Create a Workspace</a></li>
-<li><a class="reference internal" href="#moving-fastq-to-google-bucket">Moving FASTQ to Google bucket</a></li>
+<li><a class="reference internal" href="#using-google-bucket">Using Google Bucket</a></li>
+<li><a class="reference internal" href="#upload-fastq-files">Upload FASTQ Files</a></li>
 <li><a class="reference internal" href="#upload-multiplex-barcodes">Upload Multiplex Barcodes</a></li>
 <li><a class="reference internal" href="#upload-grna-annotation">Upload gRNA Annotation</a></li>
 <li><a class="reference internal" href="#upload-negative-control-annotation">Upload negative control annotation</a></li>
@@ -120,7 +121,7 @@
   <div class="section" id="crispr-seq-workflow-documentation">
 <h1>CRISPR-Seq Workflow Documentation<a class="headerlink" href="#crispr-seq-workflow-documentation" title="Permalink to this headline">¶</a></h1>
 <blockquote>
-<div><p>Sequencing the predicted cut sites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is inducing loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. Sequence analysis of predicted cut sites also facilitates studying the complex population dynamics of CRISPR/cas9 edited cells under positive or negative selection.</p>
+<div><p>Sequencing the predicted cut sites of CRISPR/cas9 experiments is an effective method of validating the CRISPR/cas9 system is creating loss-of-function (LOF) mutations. Abundant LOF allele fractions indicate sufficient Cas9 activity, guide efficiency, and tolerance to LOF mutation. Sequence analysis of predicted cut sites also facilitates studying the complex population dynamics of CRISPR/cas9 edited cells under positive or negative selection.</p>
 <p>The CRISPR-Seq analysis workflow inputs single-end targeted sequencing reads that span predicted CRISPR/cas9 cut sites and outputs an analysis of LOF allele fractions and detailed indel descriptions. The CRISPR-Seq algorithm is more accurate than traditional indel callers at detecting large indels (&gt;20bp) by using the predicted cut sites based on gRNA sequence which are unique to CRISPR/cas9 experiments. Convient options for running the analysis pipeline exist for both computational and laboratory scientists.</p>
 </div></blockquote>
 </div>
@@ -137,7 +138,7 @@
 <blockquote>
 <div><ul class="simple">
 <li>Easy to use web interface for experimentalists</li>
-<li>Cheap (X GB FASTQ file costs approximately Y for computation and Z for storage)</li>
+<li>Cheap (2 GB FASTQ file costs approximately $0.40 for computation and $0.33 per month for storage)</li>
 <li>Billing is managed by Google Cloud services</li>
 </ul>
 </div></blockquote>
@@ -220,11 +221,42 @@
 <p>When returning to FireCloud at a later time, use the filter on the main page to search for the workspace name and return to the summary tab.</p>
 </div></blockquote>
 </div>
-<div class="section" id="moving-fastq-to-google-bucket">
-<h2>Moving FASTQ to Google bucket<a class="headerlink" href="#moving-fastq-to-google-bucket" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-google-bucket">
+<h2>Using Google Bucket<a class="headerlink" href="#using-google-bucket" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>If the FASTQ files is on the local machine, it might be easiest to upload the files directly to the bucket using the web interface. However, if the files are not local, the gsutil has a function to move files directly to the bucket using the command line:</p>
+<div><p>From the summary page of the FireCloud workspace, a link to the Google bucket associated with the workspace is displayed on the right side of the page. User files required for the analysis must be uploaded to this bucket.</p>
+<img alt="_images/bucket_ID.png" src="_images/bucket_ID.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Clicking on the bucket ID on the FireCloud workspace summary opens the Google Cloud Platform web interface where files can be uploaded directly.</p>
+<img alt="_images/upload_bucket.png" src="_images/upload_bucket.png" />
+</div></blockquote>
+</div>
+<div class="section" id="upload-fastq-files">
+<h2>Upload FASTQ Files<a class="headerlink" href="#upload-fastq-files" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><p>If the FASTQ files are on a local machine, it might be easiest to upload the files directly to the bucket using the web interface. However, if the files are not local, the gsutil from the <a href="#id1"><span class="problematic" id="id2">`</span></a>Google Cloud SDK &lt;<a class="reference external" href="https://cloud.google.com/sdk/">https://cloud.google.com/sdk/</a>&gt;`_has a function to move files directly to the bucket using the command line:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>gsutil cp *.fastq gs://&lt;bucket&gt;
+</pre></div>
+</div>
+<p>Broad Institute users have the <code class="docutils literal"><span class="pre">.google-cloud-sdk</span></code> DOTKIT available for use on shared Broad servers that includes the <code class="docutils literal"><span class="pre">gsutil</span></code> function. One could write a simple script to transfer all fastq files in a directory to a Google bucket:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>#!/bin/bash
+
+#$ -cwd
+#$ -q long
+#$ -N googlebucket
+#$ -l m_mem_free=2g
+
+source /broad/software/scripts/useuse
+reuse .google-cloud-sdk
+
+gsutil cp *.fastq gs://&lt;bucket-ID&gt;/
+</pre></div>
+</div>
+<p>Assuming the script is saved as <code class="docutils literal"><span class="pre">bucket.sh</span></code>, Broad users could then submit to UGER to execute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>$ use UGER
+$ qsub bucket.sh
 </pre></div>
 </div>
 </div></blockquote>
@@ -472,7 +504,9 @@
 <div class="section" id="monitor-analysis">
 <h2>Monitor Analysis<a class="headerlink" href="#monitor-analysis" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div>Refresh the <code class="docutils literal"><span class="pre">Monitor</span></code> tab of the workspace after 4 hours to make sure the analysis is completed. If the analysis exceeds this time period, it is recommended to abort the analysis to avoid excess billing.</div></blockquote>
+<div><p>Refresh the <code class="docutils literal"><span class="pre">Monitor</span></code> tab of the workspace to make sure the analysis is running. A typical 2GB FASTQ file takes less than 2 hours to finish analyzing. In this example, if the analysis were to exceed a 4 hour time period, it is recommended to abort the analysis to avoid excess billing.</p>
+<img alt="_images/abort_job.png" src="_images/abort_job.png" />
+</div></blockquote>
 </div>
 <div class="section" id="view-results">
 <h2>View Results<a class="headerlink" href="#view-results" title="Permalink to this headline">¶</a></h2>

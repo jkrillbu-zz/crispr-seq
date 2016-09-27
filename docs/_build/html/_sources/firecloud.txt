@@ -33,13 +33,45 @@ Create a Workspace
 
 	When returning to FireCloud at a later time, use the filter on the main page to search for the workspace name and return to the summary tab.
 	
+Using Google Bucket
+-------------------
 
-Moving FASTQ to Google bucket
------------------------------
+	From the summary page of the FireCloud workspace, a link to the Google bucket associated with the workspace is displayed on the right side of the page. User files required for the analysis must be uploaded to this bucket.  
 
-	If the FASTQ files is on the local machine, it might be easiest to upload the files directly to the bucket using the web interface. However, if the files are not local, the gsutil has a function to move files directly to the bucket using the command line: ::
+	.. image:: _static/bucket_ID.png
+
+	|
+
+	Clicking on the bucket ID on the FireCloud workspace summary opens the Google Cloud Platform web interface where files can be uploaded directly.
+
+	.. image:: _static/upload_bucket.png
+
+Upload FASTQ Files
+------------------
+
+	If the FASTQ files are on a local machine, it might be easiest to upload the files directly to the bucket using the web interface. However, if the files are not local, the gsutil from the `Google Cloud SDK <https://cloud.google.com/sdk/>`_has a function to move files directly to the bucket using the command line: ::
 
 		gsutil cp *.fastq gs://<bucket>
+
+	Broad Institute users have the ``.google-cloud-sdk`` DOTKIT available for use on shared Broad servers that includes the ``gsutil`` function. One could write a simple script to transfer all fastq files in a directory to a Google bucket: ::
+
+		#!/bin/bash
+
+		#$ -cwd
+		#$ -q long
+		#$ -N googlebucket
+		#$ -l m_mem_free=2g
+
+		source /broad/software/scripts/useuse
+		reuse .google-cloud-sdk
+
+		gsutil cp *.fastq gs://<bucket-ID>/
+
+	Assuming the script is saved as ``bucket.sh``, Broad users could then submit to UGER to execute: ::
+
+		$ use UGER
+		$ qsub bucket.sh
+
 
 Upload Multiplex Barcodes
 -------------------------
@@ -183,7 +215,9 @@ Launch Analysis
 Monitor Analysis
 ----------------
 
-	Refresh the ``Monitor`` tab of the workspace after 4 hours to make sure the analysis is completed. If the analysis exceeds this time period, it is recommended to abort the analysis to avoid excess billing. 
+	Refresh the ``Monitor`` tab of the workspace to make sure the analysis is running. A typical 2GB FASTQ file takes less than 2 hours to finish analyzing. In this example, if the analysis were to exceed a 4 hour time period, it is recommended to abort the analysis to avoid excess billing. 
+
+	.. image:: _static/abort_job.png
 
 View Results
 ------------
